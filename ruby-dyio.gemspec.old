@@ -1,0 +1,11 @@
+Gem::Specification.new do |s|
+    s.name = 'dyio'
+    s.version = '0.0.1'
+    s.date = '01-09-2013'
+    s.summary = 'Ruby DyIO Communication Library'
+    s.description = 'A ruby interface to the (Neuron Robotics) DyIO coprocessor, and other Bowler devices (see http://bowler.io)'
+    s.authors = 'Solly Ross'
+    s.email = 'directxman12+gh@gmail.com'
+    s.files = ['lib/dyio.rb']
+    s.homepage = 'https://github.com/directxman12/ruby-dyio'
+end
