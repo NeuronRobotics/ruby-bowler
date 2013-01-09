@@ -1,4 +1,4 @@
-require_relative 'array_te.rb'
+require 'dyio/utils/array_te.rb'
 
 module Bowler
   

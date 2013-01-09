@@ -1,6 +1,5 @@
 require 'em/pure_ruby'
 require 'eventmachine'
-#require 'em-synchrony'
 require 'serialport'
 
 module Bowler 

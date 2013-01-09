@@ -1,4 +1,4 @@
-require_relative 'lookup_hashes.rb'
+require 'dyio/lookup_hashes'
 
 module Bowler
   BOWLER_VERSION = 3

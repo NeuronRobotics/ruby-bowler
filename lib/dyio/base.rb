@@ -2,11 +2,11 @@ require 'serialport'
 require 'em-synchrony'
 require 'fiber'
 require 'active_support/core_ext/string'
-require_relative 'command_handler.rb'
-require_relative 'serial_io_handler.rb'
-require_relative 'em_ext/serialport.rb'
-require_relative 'em_ext/deferrable_with_default.rb'
-require_relative 'event_handler.rb'
+require 'dyio/command_handler'
+require 'dyio/serial_io_handler'
+require 'dyio/em_ext/serialport'
+require 'dyio/em_ext/deferrable_with_default'
+require 'dyio/event_handler'
 
 module Bowler
 

@@ -1,13 +1,4 @@
-#require './dyio.rb'
-require './dyio/base.rb'
-require_relative './dyio/command_handler.rb'
-require_relative './dyio/serial_io_handler.rb'
-require_relative './dyio/em_ext/serialport.rb'
-require './dyio/servo.rb'
-require './dyio/button.rb'
-require './dyio/potentiometer.rb'
-require './dyio/uart.rb'
-require './dyio/bt_testing/bluez_dbus.rb'
+require 'dyio'
 
 include Bowler
 

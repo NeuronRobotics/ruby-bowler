@@ -1,4 +1,4 @@
-require_relative 'input.rb'
+require 'dyio/input'
 
 module Bowler
   module IO

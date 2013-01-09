@@ -1,4 +1,4 @@
-require_relative 'io_channel.rb'
+require 'dyio/io_channel'
 
 module Bowler
   module IO
