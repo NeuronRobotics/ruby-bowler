@@ -14,4 +14,9 @@ Gem::Specification.new do |gem|
   gem.name          = "ruby-dyio"
   gem.require_paths = ["lib"]
   gem.version       = Bowler::Gem::VERSION
+
+  gem.add_runtime_dependency 'activesupport'
+  gem.add_runtime_dependency 'em-synchrony'
+  gem.add_runtime_dependency 'eventmachine'
+  gem.add_runtime_dependency 'serialport'
 end
