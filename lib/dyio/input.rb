@@ -66,7 +66,7 @@ module Bowler
         # disables or enables event handling (used for optimization cases
         # when no event handlers are enabled or async mode is off
         def enable_event_handling=(v)
-          puts 'enable event handling'
+          #puts 'enable event handling'
           if v && @async_handler.nil?
             @async_handler = proc do |data|  
               val = data[:channels][@channel_number]

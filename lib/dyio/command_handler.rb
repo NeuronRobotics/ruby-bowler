@@ -28,7 +28,7 @@ module Bowler
         time_bytes = opts_hsh[:time].to_a(opts_hsh[:time_size])
         self.send_command('schv', :post, num, val_bytes, time_bytes)
       else
-        puts 'I like cereal'
+        #puts 'I like cereal'
         self.send_command('schv', :post, num, val_bytes)
       end
       

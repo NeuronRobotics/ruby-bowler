@@ -97,7 +97,7 @@ module Bowler
     # (you pass in the channel number -- `get_channel_as_` is the prefix)
     def method_missing(sym, *args)
       raise "Unknown method #{sym.id2name} for #{self.class.to_s}" unless sym.id2name.start_with? 'get_channel_as_'
-      dev_name = s.id2name[15..-1].camelcase
+      dev_name = sym.id2name[15..-1].camelcase
       raise "Undefine peripheral #{dev_name}" if !Bowler::IO::Peripherals.const_defined?(dev_name.to_sym) 
       raise "Must specify a channel number" unless args.length > 0
       cl = Bowler::IO::Peripherals.const_get(dev_name.to_sym)
@@ -133,7 +133,7 @@ module Bowler
 
       @heartbeat = EM::Synchrony.add_periodic_timer(interval/1000.0) do
         command_to.ping
-        puts '[DEBUG] lubdub'
+        #puts '[DEBUG] lubdub'
       end
     end
 

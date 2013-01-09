@@ -1,4 +1,4 @@
-require 'dyio'
+require './lib/dyio.rb'
 
 include Bowler
 
@@ -10,9 +10,11 @@ puts 'dyio ready'
 
 dyio.connect do
   puts 'Enter servo channel: '
-  servo = Bowler::IO::Peripherals::Servo.new(dyio, 9)
+  #servo = Bowler::IO::Peripherals::Servo.new(dyio, 9)
+  servo = dyio.get_channel_as_servo (gets.to_i)
   
-  pot = Bowler::IO::Peripherals::Potentiometer.new(dyio, 13)
+  #pot = Bowler::IO::Peripherals::Potentiometer.new(dyio, 13)
+  pot = dyio.get_channel_as_potentiometer 13
   pot.async = true
 
 # pm = proc do |frac|

@@ -52,8 +52,8 @@ module Bowler
             dev_path = @adapter.CreateDevice(addr)[0]
           end
           if (dev_path.nil?) then raise "Error: Could not get or create a device for the address #{addr}" end
-          puts addr
-          puts dev_path
+          #puts addr
+          #puts dev_path
           @device ||= @@rootservice.object dev_path
           @device.introspect
           @device['org.bluez.Device'].DiscoverServices ''

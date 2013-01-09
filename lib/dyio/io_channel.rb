@@ -136,7 +136,7 @@ module Bowler
         return true if [:digital_in, :digital_out].include? mode
 
         if (@dyio.brownout_detection?)
-          puts "#{mode.to_s} + #{@channel_number} + #{@dyio.state_of_battery_bank :a}"
+          #puts "#{mode.to_s} + #{@channel_number} + #{@dyio.state_of_battery_bank :a}"
           return true if mode == :servo_out and (@channel_number < 12 and @dyio.state_of_battery_bank(:a) != :regulated)
           return true if mode == :servo_out and (@channel_number > 11 and @dyio.state_of_battery_bank(:b) != :regulated)
         else
