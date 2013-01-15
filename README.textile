@@ -22,7 +22,7 @@ dyio = DyIO.new('/dev/DyIO0') # Assuming you're on linux, with the DyIO udev fil
 
 p. The Ruby DyIO libary uses the EventMachine library to provide an event-oriented approach to communicating with the DyIO.  Start the EventMachine reactor as follows:
 
-bc..ruby dyio.connect do
+bc.. ruby dyio.connect do
   # your code here
 end
 
