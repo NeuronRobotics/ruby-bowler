@@ -4,11 +4,12 @@ require 'serialport'
 
 module Bowler 
 
-  # A EventMachine::StreamObject that writes as normal, but reads in full bowler packets
+  # An {EventMachine::StreamObject} that writes as normal, but reads in full bowler packets
   class BowlerSource < EventMachine::StreamObject
 
     # Open a new Bowler packet source based on the given connection settings
-    # (a hash composed of :path and any options for ::SerialPort#new)
+    # @param [Hash] a hash of options for creating the serial connect -- should contain `:path`
+    #   as well as any options to be passed to {::SerialPort#new}
     def self.open(conn_hash)
       hsh = {:baud => 115200}.merge conn_hash
       hsh.delete :path
@@ -22,6 +23,7 @@ module Bowler
   
     # Overriden to read in full bowler packets at a time, based on
     # bowler header information
+    # (see EventMachine::StreamObject#eventable_read) 
     def eventable_read
       @last_activity = EventMachine::Reactor.instance.current_loop_time
       begin
@@ -44,9 +46,11 @@ end
 module EventMachine
   class << self
 
-    # Open a new Bowler packet stream connected to the given DyIO 
-    # using the given handler class (should be an instance of ) and
-    # return the connection
+    # Open a new Bowler packet stream
+    # @param [Hash] (see Bowler::BowlerSource#open)
+    # @param [Bowler::DyIO] the dyio object with which this connection will be associated
+    # @param [Class] the event handler class to use with this connection (should be in the form of #{Bowler::EventHandler})
+    # @return the resulting "connection" (event handler instance)
     def open_bowler(io_hash, dyio, handler)
       uuid          = BowlerSource.open(io_hash).uuid
       connection    = handler.new uuid, dyio

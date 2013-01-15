@@ -6,17 +6,17 @@ module Bowler
 
       # Represents a generic input device connected to a physical DyIO
       class Input < IO::Channel
-        attr_accessor :active_high
 
-        # Create an input object representing an input device of the given type
-        # connected to the given DyIO on the given channel, and sets the channel
-        # on the physical DyIO accordingly
+        # Create an input object representing some device which provides information connected to the dyio
+        # @param [DyIO] dyio the {DyIO} representing the device to which the peripheral is connected
+        # @param [Fixnum] channel the dyio channel to which the peripheral is connected
+        # @param type the type of the channel (see {Bowler::CommandHandler::CHAN_MODE_VALS})
+        # @param [true,false] async whether to operate this device in asynchronous mode
         def initialize(dyio, channel, type, async=false)
           super(dyio, channel, type, false)
           @async = async
           @callbacks = {:next => [], :all => []}
           @async_handler = nil
-          @last_val = (@active_high ? 0 : 1)
         end
 
         # Adds a new callback that occurs whenever the input value

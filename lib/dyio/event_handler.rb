@@ -14,16 +14,11 @@ module Bowler
     end
     
     # Handles an incoming event, first validating the result with
-    # the command handler, then attempting to parse the data via the command handler's #parse_eventname
+    # the command handler, then attempting to parse the data via the command handler's `parse_eventname`
     # method (if present), then handing it off to low-level event handlers
+    # @param data the event data
     def incoming_event(data)
       event_name = EVENT_LOOKUP_NAMES[data[:rpc]] || data[:rpc].to_sym
-
-      #puts "Incoming event: #{event_name} -- #{data.inspect}"
-      #puts "Incoming event: #{event_name}"
-      #puts "Run once: #{@run_once}"
-      #puts "Run always: #{@run_always}"
-      #puts "\n\n"
 
       dyio.command_handler.validate_result(data)
 
@@ -37,8 +32,6 @@ module Bowler
       handlers.push((@run_once[event_name]).shift) unless @run_once[event_name].nil? or @run_once[event_name].empty?
       handlers.push(*(@run_always[event_name] || []))
 
-      #puts "#{data.keys}"
-
       if (data[:raw_res][:method] == :status)
         status_handlers = []
         # TODO: deal with status rpc cb code if available
@@ -46,8 +39,6 @@ module Bowler
         #status_handlers.push(*(@run_always[:status][data[:rpc].to_sym] || []))
         status_handlers.push((@run_once[:status][:all]).shift) unless @run_once[:status][:all].nil? or @run_once[:status][:all].empty?
         status_handlers.push(*(@run_always[:status][:all] || []))
-
-        #puts "called status handlers #{status_handlers}"
 
         was_success = (data[:raw_res][:rpc] != '_err')
         status_handlers.each do |handler|
@@ -60,8 +51,8 @@ module Bowler
       end
     end
 
-    # Register a run-one event handler for status events (see [insert class here])
-    # for more details on the meaning of event handlers
+    # Register a run-one event handler for status events (see {Bowler::IO::Peripherals::Input#on_next_change} for 
+    # the semantics of this type of event handler)
     def next_status_event(name, &blk)
       # TODO: deal with status rpc cb code if available
       name = :all
@@ -71,7 +62,8 @@ module Bowler
 
     alias :one_status_event :next_status_event
 
-    # Register an every-time event handler
+    # Register an every-time event handler for status events
+    # (see {Bowler::IO::Peripherals::Input#on_every_change})
     def every_status_event(name, &blk)
       # TODO: deal with status rpc cb code if available
       name = :all
@@ -81,7 +73,7 @@ module Bowler
 
     alias :all_status_events :every_status_event
 
-    # Remove an event handler
+    # Remove an event handler from both lists of event handlers
     def no_more_status_events(name, &blk)
       # TODO: deal with status rpc cb code if available
       name = :all

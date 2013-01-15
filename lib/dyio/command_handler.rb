@@ -6,17 +6,22 @@ module Bowler
   # Handles sending commands to the dyio, validating Bowler packets,
   # and parsing Bowler packets into ruby data structures.
   # All parsed packets have a :raw_res key containing the raw packet metadata and data with minimal processing
-  # (see #parse_command for the format of this data) 
+  # (see {#parse_command} for the format of this data) 
   class CommandHandler
     HEADER_SIZE = 11
 
+    # Creates a new command handler
+    # @param [DyIO] dyio_obj the {DyIO} representing the device to which the peripheral is connected
     def initialize(dyio_obj)
       @dyio = dyio_obj
     end
 
-    # sets the given channel number to the given value
-    # Options include :val_size to specify a target value size
-    # and :time to specify a duration
+    # Sets the given channel number to the given value
+    # @param [Finxum] num the number of the channel to set
+    # @param [Array,Fixnum] val the value to which to set the channel
+    # @param [Hash] opts_hash a hash of options, including
+    #   :val_size to specify a target value size
+    #   and :time to specify a duration
     def set_channel_value(num, val, opts_hsh)
       res = nil
       val_bytes = unless (val.is_a? Array)
@@ -35,6 +40,9 @@ module Bowler
     end
 
     # Sets the given channel number to the given mode
+    # @param [Finxum] num the number of the channel to set
+    # @param [Symbol] the mode to which to set the given channel (see {CommandHandler::CHAN_MODE_VALS})
+    # @param [true,false] async whether or not to set the channel to asynchronous mode
     def set_channel_mode(num, mode, async=false)
       self.send_command('schm', :post, num, CHAN_MODE_VALS[mode], (async ? 1 : 0))
     end
@@ -47,7 +55,7 @@ module Bowler
       raise BowlerException.new(zone,section), "Error RPC received"
     end
 
-    # Parses a channel mode packet into `{:mode => mode, :channel => channel_number}`
+    # Parses a channel mode packet into `!{:mode => mode, :channel => channel_number}`
     def parse_channel_mode(res)
       {:raw_res => res, :mode => CHAN_MODE_NAMES[res[:data][1]], :channel => res[:data][0]}
     end
@@ -58,7 +66,7 @@ module Bowler
       {:raw_res => res, :channel_num => res[:data][0], :raw_val => res[:data][1..-1]} # note: can only be interpreted based on which channel mode is set, so metadata parsed in channel class
     end
 
-    # Parses a firmware revision packet into `{:revisions => {:dyio => [x,y,z], :bootloader => [x,y,z]}}`
+    # Parses a firmware revision packet into `!{:revisions => {:dyio => [x,y,z], :bootloader => [x,y,z]}}`
     def parse_firmware_revision(res)
       rv = {:raw_res => res, :revisions => {}}
       #(0..res[:data].length/3 - 1).each do |ind|
@@ -69,7 +77,7 @@ module Bowler
       rv
     end
 
-    # Parses a channel modes packet into `{:channels => [{:mode => mode, :editable => boolean}]}`
+    # Parses a channel modes packet into `!{:channels => [{:mode => mode, :editable => boolean}]}`
     def parse_channel_modes(res)
       rv = {:raw_res => res, :channels => []}
 
@@ -87,7 +95,7 @@ module Bowler
       rv
     end
 
-    # Parses a channel values packet into `{:channels => [[channelvalue],[channelvalue],...]}` (see #parse_channel_value)
+    # Parses a channel values packet into `!{:channels => [[channelvalue],[channelvalue],...]}` (see #parse_channel_value)
     def parse_channel_values(res)
       rv = {:raw_res => res}
 
@@ -102,13 +110,13 @@ module Bowler
       rv
     end
 
-    # Sends a power on command
+    # Sends a power-on command
     def power
       # TODO: handle disableBrownoutProtected
       self.send_command('_pwr', :get)
     end
 
-    # Parses a power packet into `{:voltage => voltage (in what units?), :banks => [:regulated or :unpowered or :powered, same types]}`
+    # Parses a power packet into `!{:voltage => voltage (in what units?), :banks => [:regulated or :unpowered or :powered, same types]}`
     def parse_power(res)
       rv =
       {
@@ -162,14 +170,14 @@ module Bowler
       end
     end
 
-    # Parses an info packet into `{:string => string}`
+    # Parses an info packet into `!{:string => string}`
     def parse_get_info(res)
       # note: does not return any formatted data
       {:raw_res => res, :string => res[:data]}
     end
     
 
-    # Parses a bowler packet into `{:revision => number, :mac_address => bytes, :namespace_id => number, :full_transaction_id => number, :direction => :upstream or :downstream,
+    # Parses a bowler packet into `!{:revision => number, :mac_address => bytes, :namespace_id => number, :full_transaction_id => number, :direction => :upstream or :downstream,
     # :given_size => number, :given_crc => number, :rpc => string, :data => bytes, :method => :status or :get or :post or :critical or :async or [:other, number], :calculated_crc => number,
     # :calculated_size => number}` (NOTE: does not actually compare the calculated size and crc with the given size and crc)
     def parse_command(datagram)

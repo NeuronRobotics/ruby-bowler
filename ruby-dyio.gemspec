@@ -19,4 +19,6 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency 'em-synchrony'
   gem.add_runtime_dependency 'eventmachine'
   gem.add_runtime_dependency 'serialport'
+
+  gem.add_development_dependency 'yard'
 end
