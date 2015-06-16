@@ -10,6 +10,13 @@ PC side of the Bowler API.
 This library requires EventMachine, EM::Synchrony, SerialPort, and DBus (see [insert urls here], dbus only required for linux Bluetooth).  Additionally, this library requires Ruby Fiber support
 (Ruby 1.9+)
 
+## Installing ##
+
+ * Check out repo
+ * cd into repo
+ * run `rake build`
+ * run `gem install pkg\ruby-dyio-0.0.1.gem`
+
 ## Getting Started ##
 
 To start off, first initialize a new DyIO object:
