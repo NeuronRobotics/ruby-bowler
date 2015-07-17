@@ -2,7 +2,7 @@
 
 ## Introduction ##
 
-This library facilitates communication with the [Neuron Robotics] DyIO open source coprocessor (see "http://bowler.io":http://bowler.io).  It is the official Ruby implementation of the
+This library facilitates communication with the [Neuron Robotics] DyIO open source coprocessor (see "http://bowler.io").  It is the official Ruby implementation of the
 PC side of the Bowler API.
 
 ## Requirements ##
